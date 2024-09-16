@@ -1,0 +1,26 @@
+// /* make the customizations */
+// $theme-colors: (
+//   'info': tomato,
+//   'danger': teal
+// );
+
+
+
+/* import bootstrap to set changes */
+@import 'bootstrap/scss/bootstrap';
+
+body {}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+.cardBox {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  align-items: flex-start;
+
+  gap: 1rem;
+
+}
