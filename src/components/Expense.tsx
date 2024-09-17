@@ -2,7 +2,7 @@ import Stack from "react-bootstrap/Stack";
 import { currencyFormater } from "../utils/formaters";
 import { Button } from "react-bootstrap";
 import { useBudget } from "../context";
-import type { Expense } from "../entities";
+import type { Expense } from "../types/entities";
 
 const Expense = ({ expense }: { expense: Expense }) => {
   const { id, description, amount } = expense;

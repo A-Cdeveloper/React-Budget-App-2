@@ -1,7 +1,7 @@
 import { PropsWithChildren, createContext } from "react";
 import { v4 as uuidv4 } from "uuid";
 import useLocalStorage from "../hooks/useLocalStorage";
-import { Budget, Expense } from "../entities";
+import { Budget, Expense } from "../types/entities";
 
 type BudgetContextType = {
   budgets: Budget[];

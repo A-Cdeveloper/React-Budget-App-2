@@ -5,7 +5,7 @@ import "./style.scss";
 
 import { BudgetContextProvider } from "./context/BudgetContext";
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <BudgetContextProvider>
     <App />
   </BudgetContextProvider>
