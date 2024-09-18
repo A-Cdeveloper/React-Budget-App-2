@@ -1,0 +1,17 @@
+[
+  {
+    "id": "5e3a1575-933d-446a-b060-912b95603730",
+    "name": "Casino",
+    "max": 1000
+  },
+  {
+    "id": "30249582-8193-4e0d-a48f-f45ffd89e2f2",
+    "name": "Kids",
+    "max": 500
+  },
+  {
+    "id": "980faa76-d097-4bcc-874a-fbfdfe3543ff",
+    "name": "Sport",
+    "max": 500
+  }
+]

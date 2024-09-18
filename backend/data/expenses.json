@@ -1,0 +1,49 @@
+[
+    {
+        "id": "42dc089c-b19f-40ae-a96f-ba4186eda2a9",
+        "amount": 450,
+        "description": "Cards"
+    },
+    {
+        "id": "da4f807e-0656-4fa8-b128-f32f4cbe0895",
+        "budgetId": "5e3a1575-933d-446a-b060-912b95603730",
+        "amount": 80,
+        "description": "Cards"
+    },
+    {
+        "id": "88743ff9-aa5a-43a4-b992-57bf4eafa53e",
+        "budgetId": "5e3a1575-933d-446a-b060-912b95603730",
+        "amount": 560,
+        "description": "Rullet"
+    },
+    {
+        "id": "ceb97c98-d380-43e9-9a38-b0eacfcf2aad",
+        "budgetId": "30249582-8193-4e0d-a48f-f45ffd89e2f2",
+        "amount": 250,
+        "description": "Pens"
+    },
+    {
+        "id": "cf360fb0-7c29-4a09-adf2-6651fb48bf3c",
+        "budgetId": "30249582-8193-4e0d-a48f-f45ffd89e2f2",
+        "amount": 120,
+        "description": "Books"
+    },
+    {
+        "id": "bf41815d-bef7-47e3-be5d-8d8767a5814e",
+        "budgetId": "Uncategorized",
+        "amount": 45,
+        "description": "Smoking"
+    },
+    {
+        "id": "b4836594-5130-4802-9dec-2731b5b98c7e",
+        "budgetId": "980faa76-d097-4bcc-874a-fbfdfe3543ff",
+        "amount": 60,
+        "description": "Ball"
+    },
+    {
+        "id": "e0d2293b-be9c-42c4-87fc-da672bb25052",
+        "budgetId": "980faa76-d097-4bcc-874a-fbfdfe3543ff",
+        "amount": 200,
+        "description": "Gym"
+    }
+]
