@@ -2,8 +2,8 @@ import { useRef } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
-import { useBudget } from "../context";
-import { UNCATEGORIZER_BUDZET_ID } from "../context/BudgetContext";
+import { useBudget, useExpense } from "../context";
+import { UNCATEGORIZER_BUDGET_ID } from "../utils/constants";
 
 type AddExpensesModalProps = {
   show: boolean;
@@ -16,7 +16,8 @@ const AddExpenseModal = ({
   handleClose,
   defaultBudgetId,
 }: AddExpensesModalProps) => {
-  const { budgets, addExpense } = useBudget();
+  const { budgets } = useBudget();
+  const { addExpense } = useExpense();
   const budgetIdInputRef = useRef<HTMLSelectElement>(null);
   const descriptionInputRef = useRef<HTMLInputElement>(null);
   const amountInputRef = useRef<HTMLInputElement>(null);
@@ -68,7 +69,6 @@ const AddExpenseModal = ({
                   </option>
                 );
               })}
-              <option id={UNCATEGORIZER_BUDZET_ID}>Uncategorized</option>
             </Form.Select>
           </Form.Group>
         </Modal.Body>

@@ -1,10 +1,10 @@
 import Modal from "react-bootstrap/Modal";
 import Stack from "react-bootstrap/Stack";
 
-import { useBudget } from "../context";
+import { useBudget, useExpense } from "../context";
 import Expense from "./Expense";
 import Button from "react-bootstrap/Button";
-import { UNCATEGORIZER_BUDZET_ID } from "../context/BudgetContext";
+import { UNCATEGORIZER_BUDGET_ID } from "../utils/constants";
 
 type ViewExpensesModalProps = {
   show: boolean;
@@ -17,7 +17,8 @@ const ViewExpensesModal = ({
   handleClose,
   defaultBudgetId,
 }: ViewExpensesModalProps) => {
-  const { getBudgetExpenses, budgets, deleteBudget } = useBudget();
+  const { budgets, deleteBudget } = useBudget();
+  const { getBudgetExpenses } = useExpense();
 
   const budgetName =
     defaultBudgetId === "Uncategorized"
@@ -31,19 +32,20 @@ const ViewExpensesModal = ({
       <Modal.Header closeButton>
         <Modal.Title>
           Expenses - {budgetName}{" "}
-          {defaultBudgetId !== UNCATEGORIZER_BUDZET_ID && (
-            <Button
-              type="button"
-              variant="outline-danger"
-              className="ms-2"
-              onClick={() => {
-                deleteBudget(defaultBudgetId!);
-                handleClose();
-              }}
-            >
-              Delete
-            </Button>
-          )}
+          {defaultBudgetId !== UNCATEGORIZER_BUDGET_ID &&
+            expenses.length === 0 && (
+              <Button
+                type="button"
+                variant="outline-danger"
+                className="ms-2"
+                onClick={() => {
+                  deleteBudget(defaultBudgetId!);
+                  handleClose();
+                }}
+              >
+                Delete Budget
+              </Button>
+            )}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>

@@ -1,15 +1,15 @@
-import { PropsWithChildren, createContext } from "react";
-import { v4 as uuidv4 } from "uuid";
-import useLocalStorage from "../hooks/useLocalStorage";
-import { Budget, Expense } from "../types/entities";
+import { PropsWithChildren, createContext, useEffect, useState } from "react";
+// import { v4 as uuidv4 } from "uuid";
+import { Budget } from "../types/entities";
+import {
+  addNewBudgetToDb,
+  getAllBudgetsFromDb,
+  deleteBudgetFromDb,
+} from "../utils/budgets";
 
 type BudgetContextType = {
   budgets: Budget[];
-  expenses: Expense[];
-  getBudgetExpenses: (budgetId: string) => Expense[];
-  addExpense: (expense: Expense) => void;
   addBudget: (budget: Budget) => void;
-  deleteExpense: (expenseId: string) => void;
   deleteBudget: (budgetId: string) => void;
 };
 
@@ -17,79 +17,32 @@ export const BudgetContext = createContext<BudgetContextType>(
   {} as BudgetContextType
 );
 
-export const UNCATEGORIZER_BUDZET_ID = "Uncategorized";
-
 export const BudgetContextProvider = ({ children }: PropsWithChildren) => {
-  const [budgets, setBudgets] = useLocalStorage<Budget[]>("budgets", []);
-  const [expenses, setExpenses] = useLocalStorage<Expense[]>("expenses", []);
+  const [budgets, setBudgets] = useState<Budget[]>([]);
+  const [changed, setChanged] = useState(false);
 
-  const getBudgetExpenses = (budgetId: string) => {
-    console.log(budgetId);
-    return expenses.filter(
-      (expense: Expense) => expense.budgetId === budgetId
-    ) as Expense[];
+  useEffect(() => {
+    const fetchBudgets = async () => {
+      const budgets = await getAllBudgetsFromDb();
+      setBudgets(budgets.data.budgets);
+    };
+
+    fetchBudgets();
+  }, [changed]);
+
+  const addBudget = async ({ name, max }: Omit<Budget, "id">) => {
+    await addNewBudgetToDb({ name, max });
+    setChanged(!changed);
   };
 
-  const addExpense = ({
-    budgetId,
-    amount,
-    description,
-  }: Omit<Expense, "id">) => {
-    setExpenses((prevExpenses: Expense[]) => {
-      return [
-        ...prevExpenses,
-        {
-          id: uuidv4(),
-          budgetId,
-          amount,
-          description,
-        },
-      ];
-    });
-  };
-  const addBudget = ({ name, max }: Omit<Budget, "id">) => {
-    setBudgets((prevBudgets: Budget[]) => {
-      if (prevBudgets.find((el) => el.name === name)) return prevBudgets;
-      return [
-        ...prevBudgets,
-        {
-          id: uuidv4(),
-          name,
-          max,
-        },
-      ];
-    });
-  };
-
-  const deleteExpense = (expenseId: string) => {
-    setExpenses((prevExpenses: Expense[]) => {
-      return prevExpenses.filter((expense) => expense.id !== expenseId);
-    });
-  };
-  const deleteBudget = (budgetid: string) => {
-    //  FIX
-    // extra logic for expenses - move expenses from deleted budget to Uncategorized
-
-    setExpenses((prevExpenses: Expense[]) => {
-      return prevExpenses.map((bexpense: Expense) => {
-        return bexpense.budgetId === budgetid
-          ? { ...bexpense, budgetId: UNCATEGORIZER_BUDZET_ID }
-          : bexpense;
-      });
-    });
-
-    setBudgets((prevBudgets: Budget[]) => {
-      return prevBudgets.filter((budget) => budget.id !== budgetid);
-    });
+  const deleteBudget = async (budgetid: string) => {
+    await deleteBudgetFromDb(budgetid);
+    setChanged(!changed);
   };
 
   const value: BudgetContextType = {
     budgets,
-    expenses,
-    getBudgetExpenses,
-    addExpense,
     addBudget,
-    deleteExpense,
     deleteBudget,
   };
   return (

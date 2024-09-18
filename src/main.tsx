@@ -3,10 +3,10 @@ import App from "./App.jsx";
 // import "bootstrap/dist/css/bootstrap.min.css";
 import "./style.scss";
 
-import { BudgetContextProvider } from "./context/BudgetContext";
+import Providers from "./Providers.js";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <BudgetContextProvider>
+  <Providers>
     <App />
-  </BudgetContextProvider>
+  </Providers>
 );

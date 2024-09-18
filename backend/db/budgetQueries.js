@@ -33,7 +33,7 @@ exports.deleteBudgetFromDB = async (id) => {
   try {
     const results = await prisma.budgets.delete({
       where: {
-        id,
+        id: id,
       },
     });
     return results;

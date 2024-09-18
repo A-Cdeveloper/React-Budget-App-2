@@ -1,8 +1,9 @@
-import { useBudget } from "../context";
+import { useBudget, useExpense } from "../context";
 import BudgetCard from "./BudgetCard";
 
 const TotalBudgetCard = () => {
-  const { expenses, budgets } = useBudget();
+  const { budgets } = useBudget();
+  const { expenses } = useExpense();
 
   const amount = expenses.reduce((acc, cur) => {
     return acc + cur.amount;

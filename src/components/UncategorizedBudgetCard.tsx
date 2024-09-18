@@ -1,6 +1,6 @@
-import { useBudget } from "../context";
+import { useExpense } from "../context";
+import { UNCATEGORIZER_BUDGET_ID } from "../utils/constants";
 import BudgetCard from "./BudgetCard";
-import { UNCATEGORIZER_BUDZET_ID } from "../context/BudgetContext";
 
 type UncategorizedBudgetCardProps = {
   addDefaultBudgetId: () => void;
@@ -8,9 +8,9 @@ type UncategorizedBudgetCardProps = {
 };
 
 const UncategorizedBudgetCard = (props: UncategorizedBudgetCardProps) => {
-  const { getBudgetExpenses } = useBudget();
+  const { getBudgetExpenses } = useExpense();
 
-  const amount = getBudgetExpenses(UNCATEGORIZER_BUDZET_ID).reduce(
+  const amount = getBudgetExpenses(UNCATEGORIZER_BUDGET_ID).reduce(
     (acc, cur) => {
       return acc + cur.amount;
     },
