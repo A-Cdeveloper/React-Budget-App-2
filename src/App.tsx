@@ -1,17 +1,19 @@
 import { useState } from "react";
-import AddBudgetModal from "./components/AddBudgetModal";
-import AddExpenseModal from "./components/AddExpenseModal";
 import { useBudget, useExpense } from "./context";
 
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Container from "react-bootstrap/Container";
 import Stack from "react-bootstrap/Stack";
+
 import BudgetCard from "./components/BudgetCard";
 import UncategorizedBudgetCard from "./components/UncategorizedBudgetCard";
 import ViewExpensesModal from "./components/ViewExpensesModal";
-import { UNCATEGORIZER_BUDGET_ID } from "./utils/constants";
 import TotalBudgetCard from "./components/TotalBudgetCard";
+import AddExpenseModal from "./components/AddExpenseModal";
+import AddBudgetModal from "./components/AddBudgetModal";
+
+import { UNCATEGORIZER_BUDGET_ID } from "./utils/constants";
 
 function App() {
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
@@ -21,7 +23,12 @@ function App() {
   const { budgets } = useBudget();
   const { getBudgetExpenses } = useExpense();
 
-  const addDefaultBudgetIdHandler = (budgetId: string) => {
+  const openAddBudgetModalHandler = () => {
+    setShowAddBudgetModal(true);
+    setDefaultBudgetId(undefined);
+  };
+
+  const openAddExpenseModalHandler = (budgetId: string) => {
     setShowAddExpenseModal(true);
     setDefaultBudgetId(budgetId);
   };
@@ -30,6 +37,8 @@ function App() {
     setViewExpensesModal(true);
     setDefaultBudgetId(budgetId);
   };
+
+  console.log("RENDER APP");
 
   return (
     <>
@@ -40,14 +49,16 @@ function App() {
             <Button
               variant="primary"
               size="sm"
-              onClick={() => setShowAddBudgetModal(true)}
+              onClick={openAddBudgetModalHandler}
             >
               Add Budget
             </Button>
             <Button
               variant="outline-primary"
               size="sm"
-              onClick={() => addDefaultBudgetIdHandler(UNCATEGORIZER_BUDGET_ID)}
+              onClick={() =>
+                openAddExpenseModalHandler(UNCATEGORIZER_BUDGET_ID)
+              }
             >
               Add Expense
             </Button>
@@ -60,7 +71,7 @@ function App() {
                 <UncategorizedBudgetCard
                   key={budget.id}
                   addDefaultBudgetId={() =>
-                    addDefaultBudgetIdHandler(UNCATEGORIZER_BUDGET_ID)
+                    openAddExpenseModalHandler(UNCATEGORIZER_BUDGET_ID)
                   }
                   viewExpenses={() =>
                     openViewExpensesHandler(UNCATEGORIZER_BUDGET_ID)
@@ -77,7 +88,9 @@ function App() {
                 name={budget.name}
                 amount={amount}
                 max={budget.max}
-                addDefaultBudgetId={() => addDefaultBudgetIdHandler(budget.id!)}
+                addDefaultBudgetId={() =>
+                  openAddExpenseModalHandler(budget.id!)
+                }
                 viewExpenses={() => openViewExpensesHandler(budget.id!)}
               />
             );

@@ -1,7 +1,7 @@
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { useRef } from "react";
+import { memo, useRef } from "react";
 import { useBudget } from "../context";
 
 type AddBudgetModalProps = {
@@ -13,6 +13,8 @@ const AddBudgetModal = ({ show, handleClose }: AddBudgetModalProps) => {
   const { addBudget } = useBudget();
   const nameInputRef = useRef<HTMLInputElement>(null);
   const maxInputRef = useRef<HTMLInputElement>(null);
+
+  console.log("RENDER BUDGET MODAL");
 
   const handlerSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -55,4 +57,4 @@ const AddBudgetModal = ({ show, handleClose }: AddBudgetModalProps) => {
   );
 };
 
-export default AddBudgetModal;
+export default memo(AddBudgetModal);

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { useExpense } from "../context";
 import { UNCATEGORIZER_BUDGET_ID } from "../utils/constants";
 import BudgetCard from "./BudgetCard";
@@ -20,4 +21,4 @@ const UncategorizedBudgetCard = (props: UncategorizedBudgetCardProps) => {
   return <BudgetCard name="Uncategorized" amount={amount} {...props} />;
 };
 
-export default UncategorizedBudgetCard;
+export default memo(UncategorizedBudgetCard);

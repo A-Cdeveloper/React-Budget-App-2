@@ -5,6 +5,7 @@ import { useBudget, useExpense } from "../context";
 import Expense from "./Expense";
 import Button from "react-bootstrap/Button";
 import { UNCATEGORIZER_BUDGET_ID } from "../utils/constants";
+import { memo } from "react";
 
 type ViewExpensesModalProps = {
   show: boolean;
@@ -19,6 +20,8 @@ const ViewExpensesModal = ({
 }: ViewExpensesModalProps) => {
   const { budgets, deleteBudget } = useBudget();
   const { getBudgetExpenses } = useExpense();
+
+  console.log("RENDER VIEW EXPENSE MODAL");
 
   const budgetName =
     defaultBudgetId === "Uncategorized"
@@ -59,4 +62,4 @@ const ViewExpensesModal = ({
   );
 };
 
-export default ViewExpensesModal;
+export default memo(ViewExpensesModal);

@@ -1,9 +1,8 @@
-import { useRef } from "react";
+import { memo, useRef } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import { useBudget, useExpense } from "../context";
-import { UNCATEGORIZER_BUDGET_ID } from "../utils/constants";
 
 type AddExpensesModalProps = {
   show: boolean;
@@ -21,6 +20,8 @@ const AddExpenseModal = ({
   const budgetIdInputRef = useRef<HTMLSelectElement>(null);
   const descriptionInputRef = useRef<HTMLInputElement>(null);
   const amountInputRef = useRef<HTMLInputElement>(null);
+
+  console.log("RENDER EXPENSE MODAL");
 
   const handlerSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -82,4 +83,4 @@ const AddExpenseModal = ({
   );
 };
 
-export default AddExpenseModal;
+export default memo(AddExpenseModal);

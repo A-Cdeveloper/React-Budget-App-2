@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import Stack from "react-bootstrap/Stack";
 
 import { currencyFormater } from "../utils/formaters";
+import { memo } from "react";
 
 type BudgetCardProps = {
   name: string;
@@ -23,9 +24,9 @@ const BudgetCard = ({
   hideButtons,
 }: BudgetCardProps) => {
   const getProgressBarVariant = (amount: number, max: number) => {
-    const koefitient = amount / max;
-    if (koefitient < 0.5) return "primary";
-    if (koefitient >= 0.5 && koefitient < 0.75) return "warning";
+    const ratio = amount / max;
+    if (ratio < 0.5) return "primary";
+    if (ratio < 0.75) return "warning";
     return "danger";
   };
 
@@ -86,4 +87,4 @@ const BudgetCard = ({
   );
 };
 
-export default BudgetCard;
+export default memo(BudgetCard);
