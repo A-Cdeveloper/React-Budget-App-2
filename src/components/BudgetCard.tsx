@@ -5,7 +5,6 @@ import Stack from "react-bootstrap/Stack";
 
 import { currencyFormater } from "../utils/formaters";
 import { memo } from "react";
-import { as } from "vitest/dist/chunks/reporters.WnPwkmgA.js";
 
 export type BudgetCardProps = {
   name: string;
@@ -36,6 +35,7 @@ const BudgetCard = ({
   return (
     <Card
       className={isOutOfLimit && max ? "bg-danger bg-opacity-25" : "bg-light"}
+      aria-label="card"
     >
       <Card.Body>
         <Card.Title className="d-flex justify-content-between align-items-baseline fw-normal mb-3">
