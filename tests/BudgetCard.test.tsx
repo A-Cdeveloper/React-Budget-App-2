@@ -5,6 +5,7 @@ import BudgetCard from "../src/components/BudgetCard";
 import { API_URL } from "../src/utils/constants";
 import { Expense, Budget } from "../src/types/entities";
 import { currencyFormater } from "../src/utils/formaters";
+import AllProviders from "./AllProviders";
 
 describe("BudgetCard", () => {
   let budget: Budget;
@@ -47,7 +48,8 @@ describe("BudgetCard", () => {
         hideButtons={false}
         addDefaultBudgetId={addExpenseFn}
         viewExpenses={viewExpensesFn}
-      />
+      />,
+      { wrapper: AllProviders }
     );
 
     return {

@@ -4,7 +4,8 @@ import { ExpenseContext } from "./ExpenseContext";
 
 export const useBudget = () => {
   const context = useContext(BudgetContext);
-  if (!context) throw new Error("useBudget must be used within a CartProvider");
+  if (!context)
+    throw new Error("useBudget must be used within a BudgetProvider");
 
   return context;
 };
@@ -12,7 +13,7 @@ export const useBudget = () => {
 export const useExpense = () => {
   const context = useContext(ExpenseContext);
   if (!context)
-    throw new Error("useExpense must be used within a CartProvider");
+    throw new Error("useExpense must be used within a BudgetProvider");
 
   return context;
 };
