@@ -5,8 +5,9 @@ import Stack from "react-bootstrap/Stack";
 
 import { currencyFormater } from "../utils/formaters";
 import { memo } from "react";
+import { as } from "vitest/dist/chunks/reporters.WnPwkmgA.js";
 
-type BudgetCardProps = {
+export type BudgetCardProps = {
   name: string;
   amount: number;
   max?: number;
@@ -53,7 +54,7 @@ const BudgetCard = ({
           <ProgressBar
             min={0}
             max={100}
-            now={(amount / max) * 100}
+            now={Math.floor((amount / max) * 100).toFixed(2) as any}
             label={`${Math.floor((amount / max) * 100).toFixed(2)}%`}
             variant={getProgressBarVariant(amount, max)}
             className="rounded-pill"
