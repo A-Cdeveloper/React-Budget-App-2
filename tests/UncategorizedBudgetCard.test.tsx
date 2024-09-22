@@ -5,15 +5,23 @@ import { ExpenseContext } from "../src/context/ExpenseContext";
 import { fetchUncategorizedBudgetExpenses } from "./utils";
 import { currencyFormater } from "../src/utils/formaters";
 import userEvent from "@testing-library/user-event";
+import { Expense } from "../src/types/entities";
 
 describe("UncategorizedBudgetCard", () => {
-  const renderComponent = async () => {
-    const uncatexpenses = await fetchUncategorizedBudgetExpenses();
+  let uncatexpenses: Expense[] = [];
+  let amount: number;
 
-    const amount = uncatexpenses.reduce((acc, cur) => {
+  beforeAll(async () => {
+    uncatexpenses = await fetchUncategorizedBudgetExpenses();
+    amount = uncatexpenses.reduce((acc, cur) => {
       return acc + cur.amount;
     }, 0);
+  });
+  afterAll(() => {
+    uncatexpenses = [];
+  });
 
+  const renderComponent = async () => {
     const addExpenseFn = vi.fn();
     const viewExpensesFn = vi.fn();
     const user = userEvent.setup();
@@ -34,7 +42,6 @@ describe("UncategorizedBudgetCard", () => {
       </ExpenseContext.Provider>
     );
     return {
-      amount,
       user,
       addExpenseButton: screen.getByRole("button", { name: /add expense/i }),
       viewExpensesButton: screen.getByRole("button", {
@@ -47,7 +54,7 @@ describe("UncategorizedBudgetCard", () => {
 
   //   //
   it("should render BudgetCard with name and amount", async () => {
-    const { amount } = await renderComponent();
+    await renderComponent();
 
     //Check if the name is rendered
     expect(screen.getByText("Uncategorized")).toBeInTheDocument();

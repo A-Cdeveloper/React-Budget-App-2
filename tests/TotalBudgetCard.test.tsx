@@ -10,20 +10,29 @@ import { currencyFormater } from "../src/utils/formaters";
 describe("TotalBudgetCard", () => {
   let expenses: Expense[] = [];
   let budgets: Budget[] = [];
+  let amount: number;
+  let max: number;
+  let progressBarValue: string;
 
-  const renderComponent = async () => {
+  beforeAll(async () => {
     expenses = await fetchExpenses();
     budgets = await fetchBudgets();
-    const amount = expenses.reduce((acc, cur) => {
+    amount = expenses.reduce((acc, cur) => {
       return acc + cur.amount;
     }, 0);
 
-    const max = budgets.reduce((acc, cur) => {
+    max = budgets.reduce((acc, cur) => {
       return acc + cur.max;
     }, 0);
 
-    const progressBarValue = Math.floor((amount / max) * 100).toFixed(2);
+    progressBarValue = Math.floor((amount / max) * 100).toFixed(2);
+  });
+  afterAll(() => {
+    expenses = [];
+    budgets = [];
+  });
 
+  const renderComponent = async () => {
     render(
       <BudgetContext.Provider
         value={{
@@ -46,18 +55,13 @@ describe("TotalBudgetCard", () => {
     );
 
     return {
-      expenses,
-      budgets,
-      amount,
-      max,
-      progressBarValue,
       progressBar: screen.getByRole("progressbar"),
     };
   };
 
   //
   it("should render TotalBudgetCard caption Total", async () => {
-    const { amount } = await renderComponent();
+    await renderComponent();
     expect(screen.getByText(/Total/i)).toBeInTheDocument();
 
     // // Check if the amount is formatted and rendered
@@ -67,7 +71,7 @@ describe("TotalBudgetCard", () => {
   });
 
   it("renders danger style when amount exceeds max", async () => {
-    const { max, amount } = await renderComponent();
+    await renderComponent();
 
     if (amount > max) {
       const card = screen.getByLabelText("card");
@@ -76,7 +80,7 @@ describe("TotalBudgetCard", () => {
   });
 
   it("should render the progress bar when max is provided", async () => {
-    const { progressBarValue, progressBar } = await renderComponent();
+    const { progressBar } = await renderComponent();
 
     // Check if the progress bar is present
     expect(progressBar).toBeInTheDocument();

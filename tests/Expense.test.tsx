@@ -1,15 +1,23 @@
 import { render, screen } from "@testing-library/react";
 import Expense from "../src/components/Expense";
-import { fetchExpense, fetchExpenses } from "./utils";
+import { fetchExpenses } from "./utils";
 import { currencyFormater } from "../src/utils/formaters";
 import userEvent from "@testing-library/user-event";
 import { ExpenseContext } from "../src/context/ExpenseContext";
 
 describe("Expense", () => {
-  it("should render expense name . amount and delete button", async () => {
-    const expenses = await fetchExpenses();
-    const deleteExpense = vi.fn();
+  let expenses: Expense[] = [];
 
+  beforeAll(async () => {
+    expenses = await fetchExpenses();
+  });
+
+  afterAll(() => {
+    expenses = [];
+  });
+
+  const renderComponent = async () => {
+    const deleteExpense = vi.fn();
     render(
       <ExpenseContext.Provider
         value={{
@@ -23,9 +31,15 @@ describe("Expense", () => {
       </ExpenseContext.Provider>
     );
 
-    screen.debug();
+    return { deleteExpense };
+  };
 
-    expect(screen.getByRole("heading").contains(expenses[0].name));
+  it("should render expense name . amount and delete button", async () => {
+    const { deleteExpense } = await renderComponent();
+
+    expect(screen.getByRole("heading")).toHaveTextContent(
+      expenses[0].description
+    );
     expect(screen.getByText(currencyFormater(expenses[0].amount)));
     expect(screen.getByRole("button", { name: "×" }));
 

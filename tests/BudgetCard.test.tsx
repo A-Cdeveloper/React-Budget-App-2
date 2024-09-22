@@ -9,14 +9,23 @@ import { fetchBudget, fetchExpensesForSingleBudget } from "./utils";
 describe("BudgetCard", () => {
   let budget: Budget;
   let expensesForBudget: Expense[] = [];
+  let amount: number;
+  let progressBarValue: string;
 
-  const renderComponent = async () => {
+  beforeAll(async () => {
     budget = await fetchBudget();
     expensesForBudget = await fetchExpensesForSingleBudget(budget.id);
-    const amount = expensesForBudget.reduce((acc, cur) => {
+    amount = expensesForBudget.reduce((acc, cur) => {
       return acc + cur.amount;
     }, 0);
-    const progressBarValue = Math.floor((amount / budget.max) * 100).toFixed(2);
+    progressBarValue = Math.floor((amount / budget.max) * 100).toFixed(2);
+  });
+  afterAll(() => {
+    budget = {} as Budget;
+    expensesForBudget = [];
+  });
+
+  const renderComponent = async () => {
     const addExpenseFn = vi.fn();
     const viewExpensesFn = vi.fn();
     const user = userEvent.setup();
