@@ -11,7 +11,11 @@ export default defineConfig({
     setupFiles: "./tests/setup.ts",
     coverage: {
       extension: ["ts", "tsx"],
-      include: ["src/**/*.{ts,tsx}"],
+      include: [
+        "src/components/**/*.{ts,tsx}",
+        "src/App.{ts,tsx}",
+        "src/main.{ts,tsx}",
+      ],
     },
   },
 });
