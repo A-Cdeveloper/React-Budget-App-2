@@ -2,34 +2,15 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import BudgetCard from "../src/components/BudgetCard";
 
-import { API_URL } from "../src/utils/constants";
-import { Expense, Budget } from "../src/types/entities";
+import { Budget, Expense } from "../src/types/entities";
 import { currencyFormater } from "../src/utils/formaters";
-import AllProviders from "./AllProviders";
+import { fetchBudget, fetchExpensesForSingleBudget } from "./utils";
 
 describe("BudgetCard", () => {
   let budget: Budget;
   let expensesForBudget: Expense[] = [];
 
   const renderComponent = async () => {
-    const fetchBudget = async () => {
-      const response = await fetch(`${API_URL}/budgets`);
-      const data = await response.json();
-      budget = data.budgets[0];
-      return budget;
-    };
-
-    const fetchExpensesForSingleBudget = async (
-      budgetId: string | undefined
-    ) => {
-      const response = await fetch(`${API_URL}/expenses`);
-      const data = await response.json();
-      expensesForBudget = data.expenses.filter(
-        (expense: Expense) => expense.budgetId === budgetId
-      );
-      return expensesForBudget;
-    };
-
     budget = await fetchBudget();
     expensesForBudget = await fetchExpensesForSingleBudget(budget.id);
     const amount = expensesForBudget.reduce((acc, cur) => {
@@ -48,8 +29,7 @@ describe("BudgetCard", () => {
         hideButtons={false}
         addDefaultBudgetId={addExpenseFn}
         viewExpenses={viewExpensesFn}
-      />,
-      { wrapper: AllProviders }
+      />
     );
 
     return {

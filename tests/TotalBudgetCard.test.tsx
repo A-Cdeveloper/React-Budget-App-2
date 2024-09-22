@@ -1,56 +1,88 @@
 import { render, screen } from "@testing-library/react";
 
 import TotalBudgetCard from "../src/components/TotalBudgetCard";
+import { BudgetContext } from "../src/context/BudgetContext";
+import { ExpenseContext } from "../src/context/ExpenseContext";
 import { Budget, Expense } from "../src/types/entities";
-import { API_URL } from "../src/utils/constants";
+import { fetchBudgets, fetchExpenses } from "./utils";
+import { currencyFormater } from "../src/utils/formaters";
 
 describe("TotalBudgetCard", () => {
-  // let budget: Budget;
-  // let expensesForBudget: Expense[] = [];
+  let expenses: Expense[] = [];
+  let budgets: Budget[] = [];
 
-  // const renderComponent = async () => {
-  //   const fetchBudget = async () => {
-  //     const response = await fetch(`${API_URL}/budgets`);
-  //     const data = await response.json();
-  //     budget = data.budgets[0];
-  //     return budget;
-  //   };
+  const renderComponent = async () => {
+    expenses = await fetchExpenses();
+    budgets = await fetchBudgets();
+    const amount = expenses.reduce((acc, cur) => {
+      return acc + cur.amount;
+    }, 0);
 
-  //   const fetchExpensesForSingleBudget = async (
-  //     budgetId: string | undefined
-  //   ) => {
-  //     const response = await fetch(`${API_URL}/expenses`);
-  //     const data = await response.json();
-  //     expensesForBudget = data.expenses.filter(
-  //       (expense: Expense) => expense.budgetId === budgetId
-  //     );
-  //     return expensesForBudget;
-  //   };
+    const max = budgets.reduce((acc, cur) => {
+      return acc + cur.max;
+    }, 0);
 
-  //   budget = await fetchBudget();
-  //   expensesForBudget = await fetchExpensesForSingleBudget(budget.id);
-  //   const amount = expensesForBudget.reduce((acc, cur) => {
-  //     return acc + cur.amount;
-  //   }, 0);
+    const progressBarValue = Math.floor((amount / max) * 100).toFixed(2);
 
-  //   render(<TotalBudgetCard />);
+    render(
+      <BudgetContext.Provider
+        value={{
+          budgets,
+          addBudget: () => {},
+          deleteBudget: () => {},
+        }}
+      >
+        <ExpenseContext.Provider
+          value={{
+            expenses,
+            getBudgetExpenses: () => [],
+            addExpense: () => {},
+            deleteExpense: () => {},
+          }}
+        >
+          <TotalBudgetCard />
+        </ExpenseContext.Provider>
+      </BudgetContext.Provider>
+    );
 
-  //   return {
-  //     budget,
-  //     expensesForBudget,
-  //     amount,
+    return {
+      expenses,
+      budgets,
+      amount,
+      max,
+      progressBarValue,
+      progressBar: screen.getByRole("progressbar"),
+    };
+  };
 
-  //     progressBar: screen.getByRole("progressbar"),
-  //     addExpenseButton: screen.getByRole("button", { name: /add expense/i }),
-  //     viewExpensesButton: screen.getByRole("button", {
-  //       name: /view expenses/i,
-  //     }),
-  //   };
-  // };
+  //
+  it("should render TotalBudgetCard caption Total", async () => {
+    const { amount } = await renderComponent();
+    expect(screen.getByText(/Total/i)).toBeInTheDocument();
 
-  it("renders correctly", () => {
-    //render(<TotalBudgetCard />);
-    // const totalBudgetCard = screen.getByTestId("total-budget-card");
-    // expect(totalBudgetCard).toBeInTheDocument();
+    // // Check if the amount is formatted and rendered
+    expect(
+      screen.getByText(currencyFormater(amount).toString())
+    ).toBeInTheDocument();
+  });
+
+  it("renders danger style when amount exceeds max", async () => {
+    const { max, amount } = await renderComponent();
+
+    if (amount > max) {
+      const card = screen.getByLabelText("card");
+      expect(card).toHaveClass("bg-danger bg-opacity-25");
+    }
+  });
+
+  it("should render the progress bar when max is provided", async () => {
+    const { progressBarValue, progressBar } = await renderComponent();
+
+    // Check if the progress bar is present
+    expect(progressBar).toBeInTheDocument();
+
+    // Check if the progress bar label shows the correct percentage
+    expect(progressBar).toHaveAttribute("aria-valuenow", progressBarValue);
+    expect(screen.getByText(`${progressBarValue}%`)).toBeInTheDocument();
   });
 });

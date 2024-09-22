@@ -5,6 +5,7 @@ import { ExpenseContext } from "./../../src/context/ExpenseContext";
 import { describe, it, expect } from "vitest";
 import { Budget, Expense } from "../../src/types/entities";
 import { API_URL } from "../../src/utils/constants";
+import { fetchExpenses } from "../utils";
 
 describe("useBudget", () => {
   let budgets: Budget[] = [];
@@ -42,11 +43,6 @@ describe("useBudget", () => {
 
 describe("useExpense", () => {
   let expenses: Expense[] = [];
-  const fetchExpenses = async () => {
-    const response = await fetch(`${API_URL}/expenses`);
-    const data = await response.json();
-    return data.expenses;
-  };
 
   it("should throw an error if used outside ExpenseContext", () => {
     const { result } = renderHook(() => useExpense());
