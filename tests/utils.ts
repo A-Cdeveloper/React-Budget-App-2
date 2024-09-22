@@ -44,6 +44,12 @@ export const fetchExpenses = async () => {
   return data.expenses;
 };
 
+export const fetchExpense = async () => {
+  const response = await fetch(`${API_URL}/expenses`);
+  const data = await response.json();
+  return data.expenses[0];
+};
+
 export const fetchExpensesForSingleBudget = async (
   budgetId: string | undefined
 ) => {
