@@ -21,8 +21,6 @@ const ViewExpensesModal = ({
   const { budgets, deleteBudget } = useBudget();
   const { getBudgetExpenses } = useExpense();
 
-  console.log("RENDER VIEW EXPENSE MODAL");
-
   const budgetName =
     defaultBudgetId === "Uncategorized"
       ? "Uncategorized"

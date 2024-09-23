@@ -14,7 +14,7 @@ const Expense = ({ expense }: { expense: Expense }) => {
       gap={2}
       className="my-2 d-flex justify-content-between align-items-center"
     >
-      <h5>{description}</h5>
+      <h5 aria-label="expense-name">{description}</h5>
       <div>
         {currencyFormater(amount)}
         <Button
